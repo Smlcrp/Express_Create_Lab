@@ -6,6 +6,8 @@ const PORT = 3000;
 // middleware
 app.use(express.urlencoded({ extended: false }));
 
+app.set('view engine', 'ejs');
+
 // db
 const products = require('./models/productModel.js');
 
@@ -38,6 +40,12 @@ app.get('/products/:productId', (req, res) => {
   products.findById(req.params.productId, (error, foundProduct) => {
     res.render('show.ejs', {product: foundProduct})
   })
+});
+
+//404 Route
+app.get("/*", (req, res) => {
+  const context = { error: req.error };
+  return res.status(404).render("404", context);
 });
 
 
